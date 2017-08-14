@@ -1,1 +1,2 @@
 # DotNetCore-Sample
+Success
