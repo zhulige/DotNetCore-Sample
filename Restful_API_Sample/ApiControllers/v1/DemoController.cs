@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Restful_API_Sample.ApiControllers.Models;
+using Microsoft.AspNetCore.Cors;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,6 +15,7 @@ namespace Restful_API_Sample.ApiControllers.v1
     /// WebApi Demo
     /// </summary>
     [Authorize]
+    [EnableCors("AllowAll")]
     [Route("api/v1/[controller]")]
     public class DemoController : Controller
     {

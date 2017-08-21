@@ -44,6 +44,11 @@ namespace Restful_API_Sample
 
             services.AddMvc();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info
@@ -93,6 +98,8 @@ namespace Restful_API_Sample
                     }
                 }
             });
+
+            app.UseCors("AllowAll");
 
             app.UseMvc();
         }
