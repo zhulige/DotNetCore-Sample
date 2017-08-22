@@ -48,9 +48,10 @@ double InterferDetector::GetCurEnergy()
 	return retVal;
 }
 
-double InterferDetector::GetInterfer(void)
+long InterferDetector::GetInterfer(void)
 {
-	return interfer;
+	//printf("%p, %lf = ", this, interfer);
+	return (long)interfer;
 }
 
 //判断是否为拐点
@@ -115,6 +116,7 @@ void InterferDetector::Reset(char rssi)
 bool InterferDetector::PushSample(char org_rssi)
 {
     interfer = org_rssi / 2.0;
+	//printf("%p, %lf - ", this, interfer);
 	return false;
 }
 char InterferDetector::Prepare(char org_rssi)

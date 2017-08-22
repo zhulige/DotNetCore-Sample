@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <None Update="lib.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="libcaptchaimage.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

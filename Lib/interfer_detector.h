@@ -49,7 +49,7 @@ public:
 
 	int GetCurFreq(void);
 	double GetCurEnergy(void);
-	double GetInterfer(void);
+	long GetInterfer(void);
 
 	bool PushSample(char rssi);
 

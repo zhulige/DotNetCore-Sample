@@ -12,16 +12,16 @@ namespace LibWarp
         
 
         [DllImport("lib.dll", EntryPoint = "NewInterferDetector")]
-        public static extern object NewInterferDetector();
+        public static extern long NewInterferDetector();
 
         [DllImport("lib.dll", EntryPoint = "SetParams")]
-        public static extern int SetParams();
+        public static extern void SetParams(long obj);
 
         [DllImport("lib.dll", EntryPoint = "PushSample")]
-        public static extern int PushSample(object obj,char rssi);
+        public static extern void PushSample(long obj,char rssi);
 
         [DllImport("lib.dll", EntryPoint = "GetInterfer")]
-        public static extern double GetInterfer(object obj);
+        public static extern double GetInterfer(long obj);
 
     }
 }
