@@ -24,10 +24,10 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CImg.h">
+    <ClInclude Include="Success.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Success.h">
+    <ClInclude Include="interfer_detector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -39,6 +39,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Success.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="interfer_detector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
