@@ -1,3 +1,9 @@
 /Restful_API_Sample/bin
 /Restful_API_Sample/obj
 /.vs
+/x64
+/LibWarp/bin
+/LibWarp/obj
+/Lib/x64
+/ConsoleApp_Lib_Sample/bin
+/ConsoleApp_Lib_Sample/obj
