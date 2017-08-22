@@ -5,3 +5,4 @@ Restful_API_Sample 是基于WebApi实现的Restful API接口示例，实现了�
  - Restful API
  - Swagger UI
  - Basic Authentication
+ - Cors
