@@ -13,12 +13,17 @@ using System.IO;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Moon.AspNetCore.Authentication.Basic;
 using System.Security.Claims;
+using Consul;
+using Restful_API_Sample.Infrastructure;
+using Microsoft.Extensions.Hosting;
 
 namespace Restful_API_Sample
 {
     public class Startup
     {
         private const string password = "zhulige";
+
+        public static ApiClient _apiClient;
 
         public Startup(IHostingEnvironment env)
         {
@@ -32,15 +37,35 @@ namespace Restful_API_Sample
 
         public IConfigurationRoot Configuration { get; }
 
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHostedService, ConsulHostedService>();
+            services.Configure<ConsulConfig>(Configuration.GetSection("consulConfig"));
+            services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(consulConfig =>
+            {
+                var address = Configuration["consulConfig:address"];
+                consulConfig.Address = new Uri(address);
+            }));
+            
+            //services
+            //    .Configure<RazorViewEngineOptions>(o =>
+            //    {
+            //        o.ViewLocationFormats.Clear();
+            //    })
+            //    .AddAuthorization();
+
             services
-                .Configure<RazorViewEngineOptions>(o =>
+                .AddAuthentication("Basic")
+                .AddBasic(o =>
                 {
-                    o.ViewLocationFormats.Clear();
-                })
-                .AddAuthorization();
+                    o.Realm = "Password: password";
+
+                    o.Events = new BasicAuthenticationEvents
+                    {
+                        OnSignIn = OnSignIn
+                    };
+                });
 
             services.AddMvc();
 
@@ -71,6 +96,10 @@ namespace Restful_API_Sample
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            _apiClient = new ApiClient(Configuration);
+
+            _apiClient.Initialize().Wait();
+
             app.UseStaticFiles();
 
             app.UseSwagger();
@@ -80,28 +109,23 @@ namespace Restful_API_Sample
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Demo API");
             });
 
-            app.UseBasicAuthentication(new BasicAuthenticationOptions
-            {
-                Realm = $"Password: {password}",
-                Events = new BasicAuthenticationEvents
-                {
-                    OnSignIn = c =>
-                    {
-                        if (c.Password == password)
-                        {
-                            var claims = new[] { new Claim(ClaimsIdentity.DefaultNameClaimType, c.UserName) };
-                            var identity = new ClaimsIdentity(claims, c.Options.AuthenticationScheme);
-                            c.Principal = new ClaimsPrincipal(identity);
-                        }
-
-                        return Task.FromResult(true);
-                    }
-                }
-            });
-
+            app.UseAuthentication();
+            
             app.UseCors("AllowAll");
 
             app.UseMvc();
+        }
+
+        private Task OnSignIn(BasicSignInContext context)
+        {
+            if (context.Password == password)
+            {
+                var claims = new[] { new Claim(ClaimsIdentity.DefaultNameClaimType, context.UserName) };
+                var identity = new ClaimsIdentity(claims, context.Scheme.Name);
+                context.Principal = new ClaimsPrincipal(identity);
+            }
+
+            return Task.CompletedTask;
         }
     }
 }

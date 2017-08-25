@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Restful_API_Sample.ApiControllers.Models;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,6 +21,8 @@ namespace Restful_API_Sample.ApiControllers.v1
     [Route("api/v1/[controller]")]
     public class DemoController : Controller
     {
+        private static ApiClient _apiClient;
+
         /// <summary>
         /// 
         /// </summary>
@@ -35,9 +39,10 @@ namespace Restful_API_Sample.ApiControllers.v1
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IEnumerable<string> Get(int id)
         {
-            return "value";
+            return Startup._apiClient.GetDemo().Result;
+            //return "value";
         }
 
         /// <summary>
