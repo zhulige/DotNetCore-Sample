@@ -77,14 +77,13 @@ namespace Restful_API_Sample
             }
         }
 
-        public virtual Task<IEnumerable<string>> GetDemo()
+        public virtual Task<IEnumerable<string>> Get(string m)
         {
             var serverUrl = _serverUrls[_currentConfigIndex];
-            var requestPath = $"{serverUrl}api/v1/demo";
+            var requestPath = $"{serverUrl}api/v1/" + m;
             
             return _serverRetryPolicy.ExecuteAsync(async () =>
             {
-         
                 //_logger.LogInformation($"Making request to {requestPath}");
                 var response = await _apiClient.GetAsync(requestPath).ConfigureAwait(false);
                 var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);

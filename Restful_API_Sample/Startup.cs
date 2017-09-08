@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Consul;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Swashbuckle.AspNetCore.Swagger;
-using Microsoft.Extensions.PlatformAbstractions;
-using System.IO;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Moon.AspNetCore.Authentication.Basic;
-using System.Security.Claims;
-using Consul;
-using Restful_API_Sample.Infrastructure;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.PlatformAbstractions;
+using Moon.AspNetCore.Authentication.Basic;
+using Restful_API_Sample.Infrastructure;
+using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.IO;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Restful_API_Sample
 {
@@ -40,6 +37,14 @@ namespace Restful_API_Sample
 
         public void ConfigureServices(IServiceCollection services)
         {
+            #region 压缩 gzip
+
+            services.AddResponseCompression();  //压缩 gzip
+
+            #endregion 压缩 gzip
+
+            #region 发现服务 Consul
+
             services.AddSingleton<IHostedService, ConsulHostedService>();
             services.Configure<ConsulConfig>(Configuration.GetSection("consulConfig"));
             services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(consulConfig =>
@@ -47,13 +52,10 @@ namespace Restful_API_Sample
                 var address = Configuration["consulConfig:address"];
                 consulConfig.Address = new Uri(address);
             }));
-            
-            //services
-            //    .Configure<RazorViewEngineOptions>(o =>
-            //    {
-            //        o.ViewLocationFormats.Clear();
-            //    })
-            //    .AddAuthorization();
+
+            #endregion 发现服务 Consul
+
+            #region 安全 HTTPBasic
 
             services
                 .AddAuthentication("Basic")
@@ -66,13 +68,24 @@ namespace Restful_API_Sample
                         OnSignIn = OnSignIn
                     };
                 });
+            #endregion 安全 HTTPBasic
+
+            #region MVC
 
             services.AddMvc();
+
+            #endregion MVC
+
+            #region 跨域 Cors
 
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             });
+
+            #endregion 跨域 Cors
+
+            #region Swagger
 
             services.AddSwaggerGen(c =>
             {
@@ -89,32 +102,42 @@ namespace Restful_API_Sample
                 
             });
 
+            #endregion Swagger
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            //压缩 gzip
+            app.UseResponseCompression();
+            
+            //日志
+            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            //loggerFactory.AddDebug();
 
+            //ApiClient
             _apiClient = new ApiClient(Configuration);
-
-            _apiClient.Initialize().Wait();
-
-            app.UseStaticFiles();
-
+            
+            //Swagger
             app.UseSwagger();
-
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Demo API");
             });
 
+            //HTTPBasic
             app.UseAuthentication();
-            
-            app.UseCors("AllowAll");
 
+            //静态 wwwroot
+            app.UseStaticFiles();
+
+            //MVC
             app.UseMvc();
+
+            //跨域 Cors
+            app.UseCors("AllowAll");
         }
+
 
         private Task OnSignIn(BasicSignInContext context)
         {

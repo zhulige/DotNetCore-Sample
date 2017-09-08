@@ -46,7 +46,8 @@ namespace Restful_API_Sample.Infrastructure
             {
                 ID = _registrationID,
                 Name = _consulConfig.Value.ServiceName,
-                Address = $"{uri.Scheme}://{uri.Host}",
+                //Address = $"{uri.Scheme}://{uri.Host}",
+                Address = $"{uri.Scheme}://192.168.31.199",
                 Port = uri.Port,
                 Tags = new[] { "Demo" }
             };
