@@ -93,7 +93,9 @@ namespace Restful_API_Sample
                 {
                     Version = "v1",
                     Title = "Demo API",
-                    Description = "RESTful API for Demo"
+                    Description = "采用 RESTful API 2.0 标准<br/>采用 Swagger 2.0 标准<br/>采用 Basic Authentication 安全验证<br/>采用 UTF8 编码",
+                    Contact=new Contact { Name = "ZhuLige"}
+                    //License = new License { Name = "Created by ZhuLige"}
                 });
 
                 var basePath = PlatformServices.Default.Application.ApplicationBasePath;
