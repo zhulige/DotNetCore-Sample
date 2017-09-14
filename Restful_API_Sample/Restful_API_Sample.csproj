@@ -6,28 +6,30 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp1.1\Swagger.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netcoreapp1.0\Restful_API_Sample.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ApiControllers\v1\DemoController.cs" />
+    <Compile Remove="ApiControllers\**" />
+    <Compile Remove="Infrastructure\**" />
+    <Content Remove="ApiControllers\**" />
+    <Content Remove="Infrastructure\**" />
+    <EmbeddedResource Remove="ApiControllers\**" />
+    <EmbeddedResource Remove="Infrastructure\**" />
+    <None Remove="ApiControllers\**" />
+    <None Remove="Infrastructure\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ApiClient.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Consul" Version="0.7.2.3" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
-    <PackageReference Include="Moon.AspNetCore.Authentication.Basic" Version="4.0.0" />
-    <PackageReference Include="Polly" Version="5.3.1" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="2.0.0" />
+    <PackageReference Include="Moon.AspNetCore.Authentication.Basic" Version="4.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
