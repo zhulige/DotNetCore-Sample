@@ -29,9 +29,9 @@ namespace Restful_API_Sample.ApiControllers.v1
         /// </remarks>
         /// <param name="login">Username:"用户名"<br/>Password:"密码"</param>
         /// <returns></returns>
-        /// <response code="201">Returns the newly created item</response>
+        /// <response code="200">用户名</response>
         /// <response code="400">用户名密码不能为空！</response>
-        [ProducesResponseType(typeof(Login), 201)]
+        [ProducesResponseType(typeof(string), 200)]
         [ProducesResponseType(typeof(Login), 400)]
         [HttpPost, Route("Login")]
         public IActionResult Login([FromBody]Login login)
@@ -41,7 +41,7 @@ namespace Restful_API_Sample.ApiControllers.v1
                 return BadRequest();
             }
             //return CreatedAtRoute("Login", new { id = item.Key }, item);
-            return Ok(login);
+            return Ok(login.UserName);
         }
 
         //// GET: api/Sample
