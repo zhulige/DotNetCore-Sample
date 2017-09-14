@@ -10,7 +10,7 @@ namespace Restful_API_Sample.V1.Controllers
     /// </summary>
     [ApiVersion("1.0", Deprecated = true)]
     [Route("api/v{api-version:apiVersion}/[controller]")]
-    public class SampleController : Controller
+    public class UserInfoController : Controller
     {
         /// <summary>
         /// 获取用户信息列表

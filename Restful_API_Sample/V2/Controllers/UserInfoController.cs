@@ -65,7 +65,7 @@ namespace Restful_API_Sample.V2.Controllers
             );
 
         /// <summary>
-        /// Creates a new person.
+        /// 添加用户信息.
         /// </summary>
         /// <param name="userInfo">The person to create.</param>
         /// <returns>The created person.</returns>
@@ -86,34 +86,49 @@ namespace Restful_API_Sample.V2.Controllers
             return CreatedAtRoute(ByIdRouteName, new { id = userInfo.Id }, userInfo);
         }
 
-        ///// <summary>
-        ///// 用户登陆
-        ///// </summary>
-        ///// <remarks>
-        ///// Note that the key is a GUID and not an integer.
-        /////  
-        /////     POST /Login
-        /////     {
-        /////        "UserName": "用户名",
-        /////        "Password": "密码"
-        /////     }
-        ///// 
-        ///// </remarks>
-        ///// <param name="login">Username:"用户名"<br/>Password:"密码"</param>
-        ///// <returns>Token</returns>
-        ///// <response code="200">返回Token</response>
-        ///// <response code="400">用户名密码不能为空！</response>
-        //[ProducesResponseType(typeof(Guid), 200)]
-        //[ProducesResponseType(400)]
-        //[HttpPost, Route("Login")]
-        //public IActionResult Login([FromBody]Login login)
-        //{
-        //    if (login.UserName == null || login.Password == null)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    return Ok(Guid.NewGuid());
-        //}
+        /// <summary>
+        /// 修改用户信息.
+        /// </summary>
+        /// <param name="id">The person to create.</param>
+        /// <param name="userInfo">The person to create.</param>
+        /// <returns>The created person.</returns>
+        /// <response code="201">The person was successfully created.</response>
+        /// <response code="400">The person was invalid.</response>
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(UserInfo), 201)]
+        [ProducesResponseType(400)]
+        public IActionResult Put(int id, [FromBody] UserInfo userInfo)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            userInfo.Id = id;
+
+            return CreatedAtRoute(ByIdRouteName, new { id = userInfo.Id }, userInfo);
+        }
+
+        /// <summary>
+        /// 删除用户信息.
+        /// </summary>
+        /// <param name="id">The person to create.</param>
+        /// <returns>The created person.</returns>
+        /// <response code="201">The person was successfully created.</response>
+        /// <response code="400">The person was invalid.</response>
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(typeof(int), 201)]
+        [ProducesResponseType(400)]
+        public IActionResult Delete(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(id);
+        }
+
 
         //// GET: api/Sample
         //[HttpGet]
@@ -128,19 +143,19 @@ namespace Restful_API_Sample.V2.Controllers
         //{
         //    return "value";
         //}
-        
+
         //// POST: api/Sample
         //[HttpPost]
         //public void Post([FromBody]string value)
         //{
         //}
-        
+
         //// PUT: api/Sample/5
         //[HttpPut("{id}")]
         //public void Put(int id, [FromBody]string value)
         //{
         //}
-        
+
         //// DELETE: api/ApiWithActions/5
         //[HttpDelete("{id}")]
         //public void Delete(int id)
