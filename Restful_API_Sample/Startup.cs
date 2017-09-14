@@ -205,9 +205,9 @@ namespace Restful_API_Sample
         {
             var info = new Info()
             {
-                Title = $"Sample API {description.ApiVersion}",
+                Title = $"Restful_API_Sample API {description.ApiVersion}",
                 Version = description.ApiVersion.ToString(),
-                Description = "A sample application with Swagger, Swashbuckle, and API versioning.",
+                Description = "这是一个Restful API 示例。",
                 Contact = new Contact() { Name = "ZhuLige" },
                 //TermsOfService = "Shareware",
                 //License = new License() { Name = "MIT", Url = "https://opensource.org/licenses/MIT" }
@@ -215,7 +215,7 @@ namespace Restful_API_Sample
 
             if (description.IsDeprecated)
             {
-                info.Description += " This API version has been deprecated.";
+                info.Description += " 这个 API 版本已弃用！";
             }
 
             return info;

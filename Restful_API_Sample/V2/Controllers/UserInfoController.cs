@@ -55,7 +55,7 @@ namespace Restful_API_Sample.V2.Controllers
         /// <response code="400">未获取到用户信息</response>
         [HttpGet("{id:int}", Name = ByIdRouteName)]
         [ProducesResponseType(typeof(UserInfo), 200)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public IActionResult Get(int id) =>
             Ok(new UserInfo()
             {
