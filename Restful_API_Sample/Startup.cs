@@ -5,9 +5,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
+using Moon.AspNetCore.Authentication.Basic;
 using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
 using System.Reflection;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Restful_API_Sample
 {
@@ -45,45 +48,24 @@ namespace Restful_API_Sample
         /// <param name="services">The collection of services to configure the application with.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            #region 压缩 gzip
+            //压缩 gzip
+            services.AddResponseCompression();
+            
+            //安全 HTTPBasic
+            services
+                .AddAuthentication("Basic")
+                .AddBasic(o =>
+                {
+                    o.Realm = "Password: password";
 
-            services.AddResponseCompression();  //压缩 gzip
-
-            #endregion 压缩 gzip
-
-            #region 发现服务 Consul
-
-            //services.AddSingleton<IHostedService, ConsulHostedService>();
-            //services.Configure<ConsulConfig>(Configuration.GetSection("consulConfig"));
-            //services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(consulConfig =>
-            //{
-            //    var address = Configuration["consulConfig:address"];
-            //    consulConfig.Address = new Uri(address);
-            //}));
-
-            #endregion 发现服务 Consul
-
-            #region 安全 HTTPBasic
-
-            //services
-            //    .AddAuthentication("Basic")
-            //    .AddBasic(o =>
-            //    {
-            //        o.Realm = "Password: password";
-
-            //        o.Events = new BasicAuthenticationEvents
-            //        {
-            //            OnSignIn = OnSignIn
-            //        };
-            //    });
-            #endregion 安全 HTTPBasic
-
-            #region MVC
-
-            //services.AddMvc();
+                    o.Events = new BasicAuthenticationEvents
+                    {
+                        OnSignIn = OnSignIn
+                    };
+                });
+            
 
             services.AddMvcCore().AddVersionedApiExplorer(o => o.GroupNameFormat = "'v'VVV");
-
             services.AddMvc();
             services.AddApiVersioning(o => o.ReportApiVersions = true);
             services.AddSwaggerGen(
@@ -108,38 +90,12 @@ namespace Restful_API_Sample
                 });
 
 
-            #endregion MVC
-
-            #region 跨域 Cors
-
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
-            //});
-
-            #endregion 跨域 Cors
-
-            #region Swagger
-
-            //services.AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v1", new Info
-            //    {
-            //        Version = "v1",
-            //        Title = "Demo API",
-            //        Description = "采用 RESTful API 2.0 标准<br/>采用 Swagger 2.0 标准<br/>采用 Basic Authentication 安全验证<br/>采用 UTF8 编码",
-            //        Contact=new Contact { Name = "ZhuLige"}
-            //        //License = new License { Name = "Created by ZhuLige"}
-            //    });
-
-            //    var basePath = PlatformServices.Default.Application.ApplicationBasePath;
-            //    var xmlPath = Path.Combine(basePath, "Swagger.xml");
-            //    c.IncludeXmlComments(xmlPath);
-                
-            //});
-
-            #endregion Swagger
-
+            //跨域 Cors
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+            });
+            
         }
 
         /// <summary>
@@ -158,11 +114,8 @@ namespace Restful_API_Sample
             //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             //loggerFactory.AddDebug();
 
-            //ApiClient
-            //_apiClient = new ApiClient(Configuration);
-
             //HTTPBasic
-            //app.UseAuthentication();
+            app.UseAuthentication();
 
             //静态 wwwroot
             app.UseStaticFiles();
@@ -171,15 +124,10 @@ namespace Restful_API_Sample
             app.UseMvc();
 
             //跨域 Cors
-            //app.UseCors("AllowAll");
+            app.UseCors("AllowAll");
 
             //Swagger
             app.UseSwagger();
-            //app.UseSwaggerUI(c =>
-            //{
-            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Demo API");
-            //});
-
             app.UseSwaggerUI(
                 options =>
                 {
@@ -207,7 +155,7 @@ namespace Restful_API_Sample
             {
                 Title = $"Restful_API_Sample API {description.ApiVersion}",
                 Version = description.ApiVersion.ToString(),
-                Description = "这是一个Restful API 示例。",
+                Description = "这是一个使用 ASP.NET Core 2.0 编写的 Restful API 示例。<br/> - 采用 RESTful API 2.0 标准<br/> - 采用 Swagger 2.0 标准<br/> - 采用 Basic Authentication 安全验证<br/> - 采用 UTF8 编码",
                 Contact = new Contact() { Name = "ZhuLige" },
                 //TermsOfService = "Shareware",
                 //License = new License() { Name = "MIT", Url = "https://opensource.org/licenses/MIT" }
@@ -215,22 +163,22 @@ namespace Restful_API_Sample
 
             if (description.IsDeprecated)
             {
-                info.Description += " 这个 API 版本已弃用！";
+                info.Description += "<br/><b>这个 API 版本已弃用！</b>";
             }
 
             return info;
         }
 
-        //private Task OnSignIn(BasicSignInContext context)
-        //{
-        //    if (context.Password == password)
-        //    {
-        //        var claims = new[] { new Claim(ClaimsIdentity.DefaultNameClaimType, context.UserName) };
-        //        var identity = new ClaimsIdentity(claims, context.Scheme.Name);
-        //        context.Principal = new ClaimsPrincipal(identity);
-        //    }
+        private Task OnSignIn(BasicSignInContext context)
+        {
+            if (context.Password == "admin")
+            {
+                var claims = new[] { new Claim(ClaimsIdentity.DefaultNameClaimType, context.UserName) };
+                var identity = new ClaimsIdentity(claims, context.Scheme.Name);
+                context.Principal = new ClaimsPrincipal(identity);
+            }
 
-        //    return Task.CompletedTask;
-        //}
+            return Task.CompletedTask;
+        }
     }
 }
