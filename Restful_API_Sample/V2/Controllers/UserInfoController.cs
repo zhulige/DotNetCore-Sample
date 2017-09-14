@@ -11,7 +11,7 @@ namespace Restful_API_Sample.V2.Controllers
     /// </summary>
     [ApiVersion("2.0")]
     [Route("api/v{api-version:apiVersion}/[controller]")]
-    public class SampleController : Controller
+    public class UserInfoController : Controller
     {
         const string ByIdRouteName = "GetById" + nameof(V2);
 
