@@ -14,9 +14,9 @@ Restful_API_Sample 是基于 ASP.NET Core 2.0 WebApi 实现的 Restful API 接�
 
 不应该使用动词：
 
-`~~/getAllResources~~`
-`~~/createNewResources~~ `
-`~~/deleteAllResources~~`
+~~/getAllResources~~
+~~/createNewResources~~
+~~/deleteAllResources~~
 
 **GET 方法和查询参数不能改变资源状态:**
 
@@ -59,14 +59,20 @@ GET /userinfo/711/activate
 
 URL 最好越简短越好，对结果过滤、排序、搜索相关的功能都应该通过参数实现。
 
-**过滤：**例如你想限制 `GET /tickets` 的返回结果：只返回那些 open 状态的 ticket， `GET /userinfo?state=open` 这里的 state 就是过滤参数。
+**过滤：**
 
-**排序：**和过滤一样，一个好的排序参数应该能够描述排序规则，而不和业务相关。复杂的排序规则应该通过组合实现。排序参数通过 `,` 分隔，排序参数前加 `-` 表示降序排列。
+例如你想限制 `GET /tickets` 的返回结果：只返回那些 open 状态的 ticket， `GET /userinfo?state=open` 这里的 state 就是过滤参数。
+
+**排序：**
+
+和过滤一样，一个好的排序参数应该能够描述排序规则，而不和业务相关。复杂的排序规则应该通过组合实现。排序参数通过 `,` 分隔，排序参数前加 `-` 表示降序排列。
 
 * GET /userinfo?sort=-priority             #获取按优先级降序排列的ticket列表
 * GET /userinfo?sort=-priority,created_at  #获取按优先级降序排列的ticket列表，在同一个优先级内，先创建的 ticket 排列在前面。
 
-**搜索：**有些时候简单的排序是不够的。我们可以使用搜索技术来实现
+**搜索：**
+
+有些时候简单的排序是不够的。我们可以使用搜索技术来实现
 
 * GET /userinfo?q=return&state=open&sort=-priority,create_at # 获取优先级最高且打开状态的 userinfo ，而且包含单词 return 的 ticket 列表。
 
@@ -98,8 +104,6 @@ response 的 body 直接就是数据，不要做多余的包装。错误实例�
 **默认使用 pretty print 格式，开启 gzip**
 
 开启 pretty print 返回结果会更加友好易读，而且额外的传输也可以忽略不计。如果忘了使用 gzip 那么传输效率将会大大减少，损失大大增加。
-
-
 
 # Http 返回码
 ## 1xx(临时响应) 
