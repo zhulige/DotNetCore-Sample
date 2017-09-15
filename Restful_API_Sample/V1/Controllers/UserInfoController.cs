@@ -90,8 +90,7 @@ namespace Restful_API_Sample.V1.Controllers
             //return CreatedAtRoute(Get, _UserInfo);
             return Ok(_LoginResponse);
         }
-        
 
-
-
+    }
+    
 }
