@@ -29,17 +29,20 @@ namespace Restful_API_Sample.V2.Controllers
                 new UserInfo()
                 {
                     Id = 1,
-                    UserName = "ZhuLige"
+                    UserName = "ZhuLige",
+                    Mobile = "13580000001"
                 },
                 new UserInfo()
                 {
                     Id = 2,
-                    UserName = "Bob"
+                    UserName = "Bob",
+                    Mobile = "13580000001"
                 },
                 new UserInfo()
                 {
                     Id = 3,
                     UserName = "Jane",
+                    Mobile = "13580000001"
                 }
             };
 
@@ -60,7 +63,8 @@ namespace Restful_API_Sample.V2.Controllers
             Ok(new UserInfo()
             {
                 Id = id,
-                UserName = "ZhuLige"
+                UserName = "ZhuLige",
+                Mobile = "13580000001"
             }
             );
 
@@ -128,39 +132,7 @@ namespace Restful_API_Sample.V2.Controllers
 
             return Ok(id);
         }
-
-
-        //// GET: api/Sample
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        //// GET: api/Sample/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //// POST: api/Sample
-        //[HttpPost]
-        //public void Post([FromBody]string value)
-        //{
-        //}
-
-        //// PUT: api/Sample/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
-
-        //// DELETE: api/ApiWithActions/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        
     }
 
     

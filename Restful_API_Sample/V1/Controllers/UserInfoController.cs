@@ -52,7 +52,7 @@ namespace Restful_API_Sample.V1.Controllers
         /// <response code="400">未获取到用户信息</response>
         [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(UserInfo), 200)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public IActionResult Get(int id) =>
             Ok(new UserInfo()
             {
@@ -61,68 +61,37 @@ namespace Restful_API_Sample.V1.Controllers
             }
             );
 
-        ///// <summary>
-        ///// 用户登陆
-        ///// </summary>
-        ///// <remarks>
-        ///// Note that the key is a GUID and not an integer.
-        /////  
-        /////     POST /Login
-        /////     {
-        /////        "UserName": "用户名",
-        /////        "Password": "密码"
-        /////     }
-        ///// 
-        ///// </remarks>
-        ///// <param name="login">Username:"用户名"<br/>Password:"密码"</param>
-        ///// <returns>Token</returns>
-        ///// <response code="200">返回Token</response>
-        ///// <response code="400">用户名密码不能为空！</response>
-        ////[ProducesResponseType(typeof(Guid), 200)]
-        ////[ProducesResponseType(400)]
-        //[HttpPost, Route("Login")]
-        //public IActionResult Login([FromBody]Login login)
-        //{
-        //    if (login.UserName == null || login.Password == null)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    return Ok(Guid.NewGuid());
-        //}
-
-        //// GET: api/Sample
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        //// GET: api/Sample/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        /// <summary>
+        /// 用户登陆
+        /// </summary>
+        /// <remarks>
+        ///  
+        ///     POST /LoginRequest
+        ///     {
+        ///        "UserName": "用户名",
+        ///        "Password": "密码"
+        ///     }
+        /// 
+        /// </remarks>
+        /// <param name="loginRequest">UserName:用户名<br/>Password:密码<br/></param>
+        /// <returns>用户信息</returns>
+        /// <response code="201">用户信息</response>
+        /// <response code="400">用户名密码不能为空！</response>
+        [HttpPost, Route("Login")]
+        [ProducesResponseType(typeof(LoginResponse), 201)]
+        [ProducesResponseType(400)]
+        public IActionResult Login([FromBody]LoginRequest loginRequest)
+        {
+            if (string.IsNullOrEmpty(loginRequest.UserName) || string.IsNullOrEmpty(loginRequest.Password))
+            {
+                return BadRequest();
+            }
+            LoginResponse _LoginResponse = new LoginResponse();
+            //return CreatedAtRoute(Get, _UserInfo);
+            return Ok(_LoginResponse);
+        }
         
-        //// POST: api/Sample
-        //[HttpPost]
-        //public void Post([FromBody]string value)
-        //{
-        //}
-        
-        //// PUT: api/Sample/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
-        
-        //// DELETE: api/ApiWithActions/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
-    }
 
-    
+
 
 }

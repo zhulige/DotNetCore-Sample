@@ -7,20 +7,19 @@ using System.Threading.Tasks;
 namespace Restful_API_Sample.V1.Models
 {
     /// <summary>
-    /// 用户登陆实体
+    /// 用户登陆返回实体
     /// </summary>
-    public class Login
+    public class LoginResponse
     {
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string Token;
+
         /// <summary>
         /// 用户名
         /// </summary>
         [Required]
         public string UserName;
-
-        /// <summary>
-        /// 密码
-        /// </summary>
-        [Required]
-        public string Password;
     }
 }
