@@ -3,12 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using Restful_API_Sample.V2.Models;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace Restful_API_Sample.V2.Controllers
 {
     /// <summary>
     /// 样板API
     /// </summary>
+    [Authorize]
+    [EnableCors("AllowAll")]
     [ApiVersion("2.0")]
     [Route("api/v{api-version:apiVersion}/[controller]")]
     public class UserInfoController : Controller
@@ -69,7 +73,7 @@ namespace Restful_API_Sample.V2.Controllers
             );
 
         /// <summary>
-        /// 添加用户信息.
+        /// 添加用户信息
         /// </summary>
         /// <param name="userInfo">The person to create.</param>
         /// <returns>The created person.</returns>
@@ -91,7 +95,7 @@ namespace Restful_API_Sample.V2.Controllers
         }
 
         /// <summary>
-        /// 修改用户信息.
+        /// 修改用户信息
         /// </summary>
         /// <param name="id">The person to create.</param>
         /// <param name="userInfo">The person to create.</param>
@@ -114,7 +118,7 @@ namespace Restful_API_Sample.V2.Controllers
         }
 
         /// <summary>
-        /// 删除用户信息.
+        /// 删除用户信息
         /// </summary>
         /// <param name="id">The person to create.</param>
         /// <returns>The created person.</returns>

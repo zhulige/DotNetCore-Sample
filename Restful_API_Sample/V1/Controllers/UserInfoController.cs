@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Restful_API_Sample.V1.Models;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace Restful_API_Sample.V1.Controllers
         /// </summary>
         /// <returns>用户信息列表.</returns>
         /// <response code="200">成功获取用户信息列表</response>
+        [Authorize]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<UserInfo>), 200)]
         public IActionResult Get()
@@ -50,6 +52,7 @@ namespace Restful_API_Sample.V1.Controllers
         /// <returns>用户信息</returns>
         /// <response code="200">成功获取用户信息</response>
         /// <response code="400">未获取到用户信息</response>
+        [Authorize]
         [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(UserInfo), 200)]
         [ProducesResponseType(404)]

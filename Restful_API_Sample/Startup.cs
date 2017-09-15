@@ -152,7 +152,7 @@ namespace Restful_API_Sample
             {
                 Title = $"Restful_API_Sample v{description.ApiVersion}",
                 Version = description.ApiVersion.ToString(),
-                Description = "Restful_API_Sample 是基于 ASP.NET Core 2.0 WebApi 实现的 Restful API 接口示例。<br/> - 采用 RESTful API 2.0 标准<br/> - 采用 Swagger 2.0 标准<br/> - 采用 Basic Authentication 安全验证<br/> - 采用 UTF8 编码<br/>",
+                Description = "Restful_API_Sample 是基于 ASP.NET Core 2.0 WebApi 实现的 Restful API 接口示例。<br/> - 采用 RESTful API 2.0 标准<br/> - 采用 Swagger 2.0 标准<br/> - 采用 Basic Authentication 安全验证（用户名密码：admin）<br/> - 采用 UTF8 编码<br/> - 支持多版本管理（点右上角版本切换）<br/>",
                 Contact = new Contact() { Name = "ZhuLige" },
                 //TermsOfService = "Shareware",
                 //License = new License() { Name = "MIT", Url = "https://opensource.org/licenses/MIT" }

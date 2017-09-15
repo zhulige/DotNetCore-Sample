@@ -181,7 +181,7 @@
         </member>
         <member name="M:Restful_API_Sample.V2.Controllers.UserInfoController.Post(Restful_API_Sample.V2.Models.UserInfo)">
             <summary>
-            添加用户信息.
+            添加用户信息
             </summary>
             <param name="userInfo">The person to create.</param>
             <returns>The created person.</returns>
@@ -190,7 +190,7 @@
         </member>
         <member name="M:Restful_API_Sample.V2.Controllers.UserInfoController.Put(System.Int32,Restful_API_Sample.V2.Models.UserInfo)">
             <summary>
-            修改用户信息.
+            修改用户信息
             </summary>
             <param name="id">The person to create.</param>
             <param name="userInfo">The person to create.</param>
@@ -200,7 +200,7 @@
         </member>
         <member name="M:Restful_API_Sample.V2.Controllers.UserInfoController.Delete(System.Int32)">
             <summary>
-            删除用户信息.
+            删除用户信息
             </summary>
             <param name="id">The person to create.</param>
             <returns>The created person.</returns>
