@@ -8,6 +8,99 @@ Restful_API_Sample 是基于 ASP.NET Core 2.0 WebApi 实现的 Restful API 接�
 
  示例DEMO:http://restful-api-sample-zhulige.chinacloudsites.cn/swagger/
 
+# Restful API 设计规范
+
+**使用的名词而不是动词**
+
+不应该使用动词：
+
+`~~/getAllResources~~`
+`~~/createNewResources~~ `
+`~~/deleteAllResources~~`
+
+**GET 方法和查询参数不能改变资源状态:**
+
+如果要改变资源的状态，使用 PUT、POST、DELETE。下面是错误的用 GET 方法来修改 user 的状态：
+
+```
+GET /userinfo/711?activate
+GET /userinfo/711/activate
+```
+
+**REST 的核心原则是将你的 API 拆分为逻辑上的资源。这些资源通过 HTTP 被操作(GET,POST,PUT,DELETE)**
+
+我们定义资源 userinfo:
+
+* GET /userinfo        # 获取userinfo列表
+* GET /userinfo/12     # 查看某个具体的userinfo
+* POST /userinfo       # 新建一个userinfo
+* PUT /userinfo/12     # 更新userinfo 12
+* DELETE /userinfo/12  # 删除userinfo 12
+
+只需要一个 endpoint：/userinfo ，再也没有其他什么命名规则和 URL 规则了。
+
+一个可以遵循的规则是：虽然看起来使用复数来描述某一个资源看起来特别扭，但是统一所有的 endpoint，使用复数使得你的 URL 更加规整。这让 API 使用者更加容易理解，对开发者来说也更容易实现。
+
+**处理关联：**
+
+* GET /userinfo/12/messages        # 获取userinfo 12的message列表
+* GET /userinfo/12/messages/5      # 获取userinfo 12的message 5
+* POST /userinfo/12/messages       # 创建userinfo 12的一个message
+* PUT /userinfo/12/messages/5      # 更新userinfo 12的message 5
+* DELETE /userinfo/12/messages/5   # 删除userinfo 12的message 5
+
+**避免层级过深的 URL**
+
+`/` 在 URL 中表达层级，用于按实体关联关系进行对象导航，一般根据 id 导航。
+
+过深的导航容易导致 URL 膨胀，不易维护，如 `GET /zoos/1/areas/3/animals/4`，尽量使用查询参数代替路劲中的实体导航，如 `GET /animals?zoo=1&area=3`。
+
+**结果过滤，排序，搜索**
+
+URL 最好越简短越好，对结果过滤、排序、搜索相关的功能都应该通过参数实现。
+
+**过滤：**例如你想限制 `GET /tickets` 的返回结果：只返回那些 open 状态的 ticket， `GET /userinfo?state=open` 这里的 state 就是过滤参数。
+
+**排序：**和过滤一样，一个好的排序参数应该能够描述排序规则，而不和业务相关。复杂的排序规则应该通过组合实现。排序参数通过 `,` 分隔，排序参数前加 `-` 表示降序排列。
+
+* GET /userinfo?sort=-priority             #获取按优先级降序排列的ticket列表
+* GET /userinfo?sort=-priority,created_at  #获取按优先级降序排列的ticket列表，在同一个优先级内，先创建的 ticket 排列在前面。
+
+**搜索：**有些时候简单的排序是不够的。我们可以使用搜索技术来实现
+
+* GET /userinfo?q=return&state=open&sort=-priority,create_at # 获取优先级最高且打开状态的 userinfo ，而且包含单词 return 的 ticket 列表。
+
+**限制API返回值的域**
+
+有时候 API 使用者不需要所有的结果，在进行横向限制的同时（例如值返回 API 结果的前十个），还应该可以进行纵向限制，并且这个功能能有效的提高网络带宽使用率和速度。可以使用 fields 查询参数来限制返回的域例如：
+
+* GET /userinfo?fields=id,subject,customer_name,updated_at&state=open&sort=-updated_at
+
+**Response不要包装**
+
+response 的 body 直接就是数据，不要做多余的包装。错误实例：
+
+```
+{
+    "success":true,
+    "data":{"id":1, "name":"xiaotuan"}
+}
+```
+
+**更新和创建操作应该返回资源**
+
+在 POST 操作以后，返回 201 created 状态码，并且包含一个指向新资源的  url 作为返回头。
+
+**命名方式**
+
+是蛇形命名还是驼峰命名？如果使用 JSON 那么最好的应该是遵守 JavaScript的命名方法-驼峰命名法。Java、C# 使用驼峰，python、ruby 使用蛇形。
+
+**默认使用 pretty print 格式，开启 gzip**
+
+开启 pretty print 返回结果会更加友好易读，而且额外的传输也可以忽略不计。如果忘了使用 gzip 那么传输效率将会大大减少，损失大大增加。
+
+
+
 # Http 返回码
 ## 1xx(临时响应) 
 	表示临时响应并需要请求者继续执行操作的状态码。
