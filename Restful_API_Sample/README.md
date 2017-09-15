@@ -6,6 +6,8 @@ Restful_API_Sample 是基于 ASP.NET Core 2.0 WebApi 实现的 Restful API 接�
  - Basic Authentication
  - Cors
 
+ 示例DEMO:http://restful-api-sample-zhulige.chinacloudsites.cn/swagger/
+
 # Http 返回码
 ## 1xx(临时响应) 
 	表示临时响应并需要请求者继续执行操作的状态码。

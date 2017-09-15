@@ -1,0 +1,249 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Restful_API_Sample</name>
+    </assembly>
+    <members>
+        <member name="T:Restful_API_Sample.Program">
+            <summary>
+            Represents the current application.
+            </summary>
+        </member>
+        <member name="M:Restful_API_Sample.Program.Main(System.String[])">
+            <summary>
+            The main entry point to the application.
+            </summary>
+            <param name="args">The arguments provides at start-up, if any.</param>
+        </member>
+        <member name="T:Restful_API_Sample.Startup">
+            <summary>
+            Represents the startup process for the application.
+            </summary>
+        </member>
+        <member name="M:Restful_API_Sample.Startup.#ctor(Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Restful_API_Sample.Startup"/> class.
+            </summary>
+            <param name="env">The current hosting environment.</param>
+        </member>
+        <member name="P:Restful_API_Sample.Startup.Configuration">
+            <summary>
+            Gets the current configuration.
+            </summary>
+            <value>The current application configuration.</value>
+        </member>
+        <member name="M:Restful_API_Sample.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Configures services for the application.
+            </summary>
+            <param name="services">The collection of services to configure the application with.</param>
+        </member>
+        <member name="M:Restful_API_Sample.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider)">
+            <summary>
+            Configures the application using the provided builder, hosting environment, and logging factory.
+            </summary>
+            <param name="app">The current application builder.</param>
+            <param name="env">The current hosting environment.</param>
+            <param name="loggerFactory">The logging factory used for instrumentation.</param>
+            <param name="provider">The API version descriptor provider used to enumerate defined API versions.</param>
+        </member>
+        <member name="T:Restful_API_Sample.SwaggerDefaultValues">
+            <summary>
+            Represents the Swagger/Swashbuckle operation filter used to document the implicit API version parameter.
+            </summary>
+            <remarks>This <see cref="T:Swashbuckle.AspNetCore.SwaggerGen.IOperationFilter"/> is only required due to bugs in the <see cref="T:Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator"/>.
+            Once they are fixed and published, this class can be removed.</remarks>
+        </member>
+        <member name="M:Restful_API_Sample.SwaggerDefaultValues.Apply(Swashbuckle.AspNetCore.Swagger.Operation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            Applies the filter to the specified operation using the given context.
+            </summary>
+            <param name="operation">The operation to apply the filter to.</param>
+            <param name="context">The current operation filter context.</param>
+        </member>
+        <member name="T:Restful_API_Sample.ApiControllers.v1.LoadRunnerController">
+            <summary>
+            性能测试
+            </summary>
+        </member>
+        <member name="M:Restful_API_Sample.ApiControllers.v1.LoadRunnerController.Get">
+            <summary>
+            获取列表1000条
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Restful_API_Sample.V1.Controllers.UserInfoController">
+            <summary>
+            样板API
+            </summary>
+        </member>
+        <member name="M:Restful_API_Sample.V1.Controllers.UserInfoController.Get">
+            <summary>
+            获取用户信息列表
+            </summary>
+            <returns>用户信息列表.</returns>
+            <response code="200">成功获取用户信息列表</response>
+        </member>
+        <member name="M:Restful_API_Sample.V1.Controllers.UserInfoController.Get(System.Int32)">
+            <summary>
+            获取用户信息
+            </summary>
+            <param name="id">用户Id</param>
+            <returns>用户信息</returns>
+            <response code="200">成功获取用户信息</response>
+            <response code="400">未获取到用户信息</response>
+        </member>
+        <member name="M:Restful_API_Sample.V1.Controllers.UserInfoController.Login(Restful_API_Sample.V1.Models.LoginRequest)">
+            <summary>
+            用户登陆
+            </summary>
+            <remarks>
+             
+                POST /LoginRequest
+                {
+                   "UserName": "用户名",
+                   "Password": "密码"
+                }
+            
+            </remarks>
+            <param name="loginRequest">UserName:用户名<br/>Password:密码<br/></param>
+            <returns>用户信息</returns>
+            <response code="201">用户信息</response>
+            <response code="400">用户名密码不能为空！</response>
+        </member>
+        <member name="T:Restful_API_Sample.V1.Models.LoginRequest">
+            <summary>
+            用户登陆请求实体
+            </summary>
+        </member>
+        <member name="F:Restful_API_Sample.V1.Models.LoginRequest.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="F:Restful_API_Sample.V1.Models.LoginRequest.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="T:Restful_API_Sample.V1.Models.LoginResponse">
+            <summary>
+            用户登陆返回实体
+            </summary>
+        </member>
+        <member name="F:Restful_API_Sample.V1.Models.LoginResponse.Token">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="F:Restful_API_Sample.V1.Models.LoginResponse.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="T:Restful_API_Sample.V1.Models.UserInfo">
+            <summary>
+            用户信息
+            </summary>
+        </member>
+        <member name="P:Restful_API_Sample.V1.Models.UserInfo.Id">
+            <summary>
+            用户Id
+            </summary>
+            <value>The person's unique identifier.</value>
+        </member>
+        <member name="P:Restful_API_Sample.V1.Models.UserInfo.UserName">
+            <summary>
+            用户名
+            </summary>
+            <value>The person's first name.</value>
+        </member>
+        <member name="T:Restful_API_Sample.V2.Controllers.UserInfoController">
+            <summary>
+            样板API
+            </summary>
+        </member>
+        <member name="M:Restful_API_Sample.V2.Controllers.UserInfoController.Get">
+            <summary>
+            获取用户信息列表
+            </summary>
+            <returns>用户信息列表.</returns>
+            <response code="200">成功获取用户信息列表</response>
+        </member>
+        <member name="M:Restful_API_Sample.V2.Controllers.UserInfoController.Get(System.Int32)">
+            <summary>
+            获取用户信息
+            </summary>
+            <param name="id">用户Id</param>
+            <returns>用户信息</returns>
+            <response code="200">成功获取用户信息</response>
+            <response code="400">未获取到用户信息</response>
+        </member>
+        <member name="M:Restful_API_Sample.V2.Controllers.UserInfoController.Post(Restful_API_Sample.V2.Models.UserInfo)">
+            <summary>
+            添加用户信息.
+            </summary>
+            <param name="userInfo">The person to create.</param>
+            <returns>The created person.</returns>
+            <response code="201">The person was successfully created.</response>
+            <response code="400">The person was invalid.</response>
+        </member>
+        <member name="M:Restful_API_Sample.V2.Controllers.UserInfoController.Put(System.Int32,Restful_API_Sample.V2.Models.UserInfo)">
+            <summary>
+            修改用户信息.
+            </summary>
+            <param name="id">The person to create.</param>
+            <param name="userInfo">The person to create.</param>
+            <returns>The created person.</returns>
+            <response code="201">The person was successfully created.</response>
+            <response code="400">The person was invalid.</response>
+        </member>
+        <member name="M:Restful_API_Sample.V2.Controllers.UserInfoController.Delete(System.Int32)">
+            <summary>
+            删除用户信息.
+            </summary>
+            <param name="id">The person to create.</param>
+            <returns>The created person.</returns>
+            <response code="201">The person was successfully created.</response>
+            <response code="400">The person was invalid.</response>
+        </member>
+        <member name="T:Restful_API_Sample.V2.Models.Login">
+            <summary>
+            用户登陆实体
+            </summary>
+        </member>
+        <member name="F:Restful_API_Sample.V2.Models.Login.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="F:Restful_API_Sample.V2.Models.Login.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="T:Restful_API_Sample.V2.Models.UserInfo">
+            <summary>
+            用户信息
+            </summary>
+        </member>
+        <member name="P:Restful_API_Sample.V2.Models.UserInfo.Id">
+            <summary>
+            用户Id
+            </summary>
+            <value>The person's unique identifier.</value>
+        </member>
+        <member name="P:Restful_API_Sample.V2.Models.UserInfo.UserName">
+            <summary>
+            用户名
+            </summary>
+            <value>登陆所用用户名</value>
+        </member>
+        <member name="P:Restful_API_Sample.V2.Models.UserInfo.Mobile">
+            <summary>
+            手机号
+            </summary>
+            <value>登陆所用手机号</value>
+        </member>
+    </members>
+</doc>

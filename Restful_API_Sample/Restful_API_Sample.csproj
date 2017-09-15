@@ -6,7 +6,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp1.0\Restful_API_Sample.xml</DocumentationFile>
+    <DocumentationFile>Restful_API_Sample.xml</DocumentationFile>
+    <OutputPath>bin\Debug\netcoreapp2.0\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Properties\PublishProfiles\Restful-API-Sample - FTP.pubxml" />
+    <None Remove="Properties\PublishProfiles\Restful-API-Sample - Web Deploy.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Consul" Version="0.7.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="2.0.0" />
@@ -34,6 +40,14 @@
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Restful_API_Sample.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
 </Project>

@@ -87,6 +87,8 @@ namespace Restful_API_Sample.V1.Controllers
                 return BadRequest();
             }
             LoginResponse _LoginResponse = new LoginResponse();
+            _LoginResponse.Token = Guid.NewGuid().ToString();
+            _LoginResponse.UserName = loginRequest.UserName;
             //return CreatedAtRoute(Get, _UserInfo);
             return Ok(_LoginResponse);
         }

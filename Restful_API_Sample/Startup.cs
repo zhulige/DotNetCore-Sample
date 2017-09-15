@@ -19,9 +19,6 @@ namespace Restful_API_Sample
     /// </summary>
     public class Startup
     {
-        //private const string password = "zhulige";
-
-        //public static ApiClient _apiClient;
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
@@ -163,7 +160,7 @@ namespace Restful_API_Sample
 
             if (description.IsDeprecated)
             {
-                info.Description += "<br/><b>这个 API 版本已弃用！</b>";
+                info.Description += "<br/><b>此 API 版本已弃用！</b>";
             }
 
             return info;
