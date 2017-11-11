@@ -65,10 +65,15 @@ PUT（UPDATE）：在服务器更新资源（客户端提供改变后的完整�
 PATCH（UPDATE）：在服务器更新资源（客户端提供改变的属性）。
 DELETE（DELETE）：从服务器删除资源。
 ```
+
 还有两个不常用的HTTP动词。
+
 HEAD：获取资源的元数据。
+
 OPTIONS：获取信息，关于资源的哪些属性是客户端可以改变的。
+
 下面是一些例子。
+
 ```
 GET /zoos：列出所有动物园
 POST /zoos：新建一个动物园
@@ -81,8 +86,11 @@ DELETE /zoos/ID/animals/ID：删除某个指定动物园的指定动物
 ```
 
 # 六、过滤信息（Filtering）
+
 如果记录数量很多，服务器不可能都将它们返回给用户。API应该提供参数，过滤返回结果。
+
 下面是一些常见的参数。
+
 ```
 ?limit=10：指定返回记录的数量
 ?offset=10：指定返回记录的开始位置。
@@ -90,10 +98,13 @@ DELETE /zoos/ID/animals/ID：删除某个指定动物园的指定动物
 ?sortby=name&order=asc：指定返回结果按照哪个属性排序，以及排序顺序。
 ?animal_type_id=1：指定筛选条件
 ```
+
 参数的设计允许存在冗余，即允许API路径和URL参数偶尔有重复。比如，GET /zoo/ID/animals 与 GET /animals?zoo_id=ID 的含义是相同的。
 
 # 七、状态码（Status Codes）
+
 服务器向用户返回的状态码和提示信息，常见的有以下一些（方括号中是该状态码对应的HTTP动词）。
+
 ```
 200 OK - [GET]：服务器成功返回用户请求的数据，该操作是幂等的（Idempotent）。
 201 CREATED - [POST/PUT/PATCH]：用户新建或修改数据成功。
@@ -108,10 +119,13 @@ DELETE /zoos/ID/animals/ID：删除某个指定动物园的指定动物
 422 Unprocesable entity - [POST/PUT/PATCH] 当创建一个对象时，发生一个验证错误。
 500 INTERNAL SERVER ERROR - [*]：服务器发生错误，用户将无法判断发出的请求是否成功。
 ```
+
 状态码的完全列表参见这里。
 
 # 八、错误处理（Error handling）
+
 如果状态码是4xx，就应该向用户返回出错信息。一般来说，返回的信息中将error作为键名，出错信息作为键值即可。
+
 ```
 {
     error: "Invalid API key"
@@ -119,7 +133,9 @@ DELETE /zoos/ID/animals/ID：删除某个指定动物园的指定动物
 ```
 
 # 九、返回结果
+
 针对不同操作，服务器向用户返回的结果应该符合以下规范。
+
 ```
 GET /collection：返回资源对象的列表（数组）
 GET /collection/resource：返回单个资源对象
@@ -131,7 +147,9 @@ DELETE /collection/resource：返回一个空文档
 
 # 十、Hypermedia API
 RESTful API最好做到Hypermedia，即返回结果中提供链接，连向其他API方法，使得用户不查文档，也知道下一步应该做什么。
+
 比如，当用户向api.example.com的根目录发出请求，会得到这样一个文档。
+
 ```
 {"link": {
   "rel":   "collection https://www.example.com/zoos",
@@ -140,8 +158,13 @@ RESTful API最好做到Hypermedia，即返回结果中提供链接，连向其�
   "type":  "application/vnd.yourformat+json"
 }}
 ```
-上面代码表示，文档中有一个link属性，用户读取这个属性就知道下一步该调用什么API了。rel表示这个API与当前网址的关系（collection关系，并给出该collection的网址），href表示API的路径，title表示API的标题，type表示返回类型。
+
+上面代码表示，文档中有一个link属性，用户读取这个属性就知道下一步该调用什么API了。
+
+rel表示这个API与当前网址的关系（collection关系，并给出该collection的网址），href表示API的路径，title表示API的标题，type表示返回类型。
+
 Hypermedia API的设计被称为HATEOAS。Github的API就是这种设计，访问api.github.com会得到一个所有可用API的网址列表。
+
 ```
 {
   "current_user_url": "https://api.github.com/user",
@@ -149,15 +172,19 @@ Hypermedia API的设计被称为HATEOAS。Github的API就是这种设计，访�
   // ...
 }
 ```
+
 从上面可以看到，如果想获取当前用户的信息，应该去访问api.github.com/user，然后就得到了下面结果。
+
 ```
 {
   "message": "Requires authentication",
   "documentation_url": "https://developer.github.com/v3"
 }
 ```
+
 上面代码表示，服务器给出了提示信息，以及文档的网址。
 
 # 十一、其他
 （1）API的身份认证应该使用 OAuth 2.0 框架。
+
 （2）服务器返回的数据格式，应该尽量使用JSON，避免使用XML。
