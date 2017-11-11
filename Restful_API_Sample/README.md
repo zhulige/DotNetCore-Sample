@@ -12,7 +12,7 @@ Restful_API_Sample 是基于 ASP.NET Core 2.0 WebApi 实现的 Restful API 接�
 
 # 一、协议
 
-API与用户的通信协议，总是使用HTTPs协议。
+API与用户的通信协议，建议使用HTTPs协议。
 
 # 二、域名
 
