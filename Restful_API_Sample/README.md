@@ -1,10 +1,10 @@
 # Restful_API_Sample
 Restful_API_Sample 是基于 ASP.NET Core 2.0 WebApi 实现的 Restful API 接口示例，实现了以下功能。
- - Multi Version
- - Restful API
- - Swagger UI
- - Basic Authentication
- - Cors
+ - 多版本 (Multi Version)
+ - 文档 (Swagger UI)
+ - 安全 (HTTPBasic Authentication)
+ - 跨域 (Cors)
+ - 压缩 (gzip)
 
  示例DEMO:http://restful-api-sample-zhulige.chinacloudsites.cn/swagger/
 
