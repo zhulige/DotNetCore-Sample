@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Compile Remove="ApiClient.cs" />
+    <Compile Remove="V1\Controllers\LoadRunnerController.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -17,15 +17,17 @@ namespace Restful_API_Sample.V2.Controllers
     [Route("api/v{api-version:apiVersion}/[controller]")]
     public class UserInfoController : Controller
     {
-        const string ByIdRouteName = "GetById" + nameof(V2);
+        //const string ByIdRouteName = "GetById" + nameof(V2);
 
         /// <summary>
         /// 获取用户信息列表
         /// </summary>
         /// <returns>用户信息列表.</returns>
-        /// <response code="200">成功获取用户信息列表</response>
+        /// <response code="200">成功</response>
+        /// <response code="400">失败</response>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<UserInfo>), 200)]
+        [ProducesResponseType(400)]
         public IActionResult Get()
         {
             var _UserName = new[]
@@ -58,11 +60,11 @@ namespace Restful_API_Sample.V2.Controllers
         /// </summary>
         /// <param name="id">用户Id</param>
         /// <returns>用户信息</returns>
-        /// <response code="200">成功获取用户信息</response>
-        /// <response code="400">未获取到用户信息</response>
-        [HttpGet("{id:int}", Name = ByIdRouteName)]
+        /// <response code="200">成功</response>
+        /// <response code="400">失败</response>
+        [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(UserInfo), 200)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
         public IActionResult Get(int id) =>
             Ok(new UserInfo()
             {
@@ -77,8 +79,8 @@ namespace Restful_API_Sample.V2.Controllers
         /// </summary>
         /// <param name="userInfo">The person to create.</param>
         /// <returns>The created person.</returns>
-        /// <response code="201">The person was successfully created.</response>
-        /// <response code="400">The person was invalid.</response>
+        /// <response code="201">成功</response>
+        /// <response code="400">失败</response>
         [HttpPost]
         [ProducesResponseType(typeof(UserInfo), 201)]
         [ProducesResponseType(400)]
@@ -91,21 +93,21 @@ namespace Restful_API_Sample.V2.Controllers
 
             userInfo.Id = 42;
 
-            return CreatedAtRoute(ByIdRouteName, new { id = userInfo.Id }, userInfo);
+            return Created("UserInfo", userInfo);
         }
 
         /// <summary>
         /// 修改用户信息
         /// </summary>
-        /// <param name="id">The person to create.</param>
-        /// <param name="userInfo">The person to create.</param>
+        /// <param name="id">实体主键</param>
+        /// <param name="userInfo">实体数据</param>
         /// <returns>The created person.</returns>
-        /// <response code="201">The person was successfully created.</response>
-        /// <response code="400">The person was invalid.</response>
+        /// <response code="201">成功</response>
+        /// <response code="400">失败</response>
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(UserInfo), 201)]
         [ProducesResponseType(400)]
-        public IActionResult Put(int id, [FromBody] UserInfo userInfo)
+        public IActionResult Put(int id, [FromBody]UserInfo userInfo)
         {
             if (!ModelState.IsValid)
             {
@@ -114,7 +116,7 @@ namespace Restful_API_Sample.V2.Controllers
 
             userInfo.Id = id;
 
-            return CreatedAtRoute(ByIdRouteName, new { id = userInfo.Id }, userInfo);
+            return Created("UserInfo", userInfo);
         }
 
         /// <summary>
@@ -122,10 +124,10 @@ namespace Restful_API_Sample.V2.Controllers
         /// </summary>
         /// <param name="id">The person to create.</param>
         /// <returns>The created person.</returns>
-        /// <response code="201">The person was successfully created.</response>
-        /// <response code="400">The person was invalid.</response>
+        /// <response code="204">成功</response>
+        /// <response code="400">失败</response>
         [HttpDelete("{id:int}")]
-        [ProducesResponseType(typeof(int), 201)]
+        [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult Delete(int id)
         {
@@ -134,7 +136,7 @@ namespace Restful_API_Sample.V2.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok(id);
+            return NoContent();
         }
         
     }

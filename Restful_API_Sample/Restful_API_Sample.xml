@@ -61,17 +61,6 @@
             <param name="operation">The operation to apply the filter to.</param>
             <param name="context">The current operation filter context.</param>
         </member>
-        <member name="T:Restful_API_Sample.ApiControllers.v1.LoadRunnerController">
-            <summary>
-            性能测试
-            </summary>
-        </member>
-        <member name="M:Restful_API_Sample.ApiControllers.v1.LoadRunnerController.Get">
-            <summary>
-            获取列表1000条
-            </summary>
-            <returns></returns>
-        </member>
         <member name="T:Restful_API_Sample.V1.Controllers.UserInfoController">
             <summary>
             样板API
@@ -82,7 +71,8 @@
             获取用户信息列表
             </summary>
             <returns>用户信息列表.</returns>
-            <response code="200">成功获取用户信息列表</response>
+            <response code="200">成功</response>
+            <response code="400">失败</response>
         </member>
         <member name="M:Restful_API_Sample.V1.Controllers.UserInfoController.Get(System.Int32)">
             <summary>
@@ -90,27 +80,18 @@
             </summary>
             <param name="id">用户Id</param>
             <returns>用户信息</returns>
-            <response code="200">成功获取用户信息</response>
-            <response code="400">未获取到用户信息</response>
+            <response code="200">成功</response>
+            <response code="400">失败</response>
         </member>
         <member name="M:Restful_API_Sample.V1.Controllers.UserInfoController.Login(Restful_API_Sample.V1.Models.LoginRequest)">
-            <summary>
-            用户登陆
-            </summary>
-            <remarks>
-            用户登陆 
-            
-                POST /LoginRequest
-                {
-                   "UserName": "用户名",
-                   "Password": "密码"
-                }
-            
-            </remarks>
             <param name="loginRequest">UserName:用户名<br/>Password:密码<br/></param>
             <returns>用户信息</returns>
-            <response code="201">用户信息</response>
-            <response code="400">用户名密码不能为空！</response>
+            <response code="201">成功</response>
+            <response code="400">失败</response>
+            <response code="401">安全认证失败</response>
+            <response code="404">地址不存在</response>
+            <response code="500">地址不存在</response>
+            <response code="503">服务器性能达到瓶颈</response>
         </member>
         <member name="T:Restful_API_Sample.V1.Models.LoginRequest">
             <summary>
@@ -169,7 +150,8 @@
             获取用户信息列表
             </summary>
             <returns>用户信息列表.</returns>
-            <response code="200">成功获取用户信息列表</response>
+            <response code="200">成功</response>
+            <response code="400">失败</response>
         </member>
         <member name="M:Restful_API_Sample.V2.Controllers.UserInfoController.Get(System.Int32)">
             <summary>
@@ -177,8 +159,8 @@
             </summary>
             <param name="id">用户Id</param>
             <returns>用户信息</returns>
-            <response code="200">成功获取用户信息</response>
-            <response code="400">未获取到用户信息</response>
+            <response code="200">成功</response>
+            <response code="400">失败</response>
         </member>
         <member name="M:Restful_API_Sample.V2.Controllers.UserInfoController.Post(Restful_API_Sample.V2.Models.UserInfo)">
             <summary>
@@ -186,18 +168,18 @@
             </summary>
             <param name="userInfo">The person to create.</param>
             <returns>The created person.</returns>
-            <response code="201">The person was successfully created.</response>
-            <response code="400">The person was invalid.</response>
+            <response code="201">成功</response>
+            <response code="400">失败</response>
         </member>
         <member name="M:Restful_API_Sample.V2.Controllers.UserInfoController.Put(System.Int32,Restful_API_Sample.V2.Models.UserInfo)">
             <summary>
             修改用户信息
             </summary>
-            <param name="id">The person to create.</param>
-            <param name="userInfo">The person to create.</param>
+            <param name="id">实体主键</param>
+            <param name="userInfo">实体数据</param>
             <returns>The created person.</returns>
-            <response code="201">The person was successfully created.</response>
-            <response code="400">The person was invalid.</response>
+            <response code="201">成功</response>
+            <response code="400">失败</response>
         </member>
         <member name="M:Restful_API_Sample.V2.Controllers.UserInfoController.Delete(System.Int32)">
             <summary>
@@ -205,8 +187,8 @@
             </summary>
             <param name="id">The person to create.</param>
             <returns>The created person.</returns>
-            <response code="201">The person was successfully created.</response>
-            <response code="400">The person was invalid.</response>
+            <response code="204">成功</response>
+            <response code="400">失败</response>
         </member>
         <member name="T:Restful_API_Sample.V2.Models.Login">
             <summary>
