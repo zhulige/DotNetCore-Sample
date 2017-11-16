@@ -1,166 +1,196 @@
 # Restful_API_Sample
 Restful_API_Sample 是基于 ASP.NET Core 2.0 WebApi 实现的 Restful API 接口示例，实现了以下功能。
- - Multi Version
- - Restful API
- - Swagger UI
- - Basic Authentication
- - Cors
+ - 多版本 (Multi Version)
+ - 文档 (Swagger UI)
+ - 安全 (HTTPBasic Authentication)
+ - 跨域 (Cors)
+ - 压缩 (gzip)
 
  示例DEMO:http://restful-api-sample-zhulige.chinacloudsites.cn/swagger/
 
 # Restful API 设计规范
 
-**使用的名词而不是动词**
+# 一、协议
 
-不应该使用动词：
+API与用户的通信协议，建议使用HTTPs协议。
 
-~~/getAllResources~~
-~~/createNewResources~~
-~~/deleteAllResources~~
+# 二、域名
 
-**GET 方法和查询参数不能改变资源状态:**
-
-如果要改变资源的状态，使用 PUT、POST、DELETE。下面是错误的用 GET 方法来修改 user 的状态：
+应该尽量将API部署在专用域名之下。
 
 ```
-GET /userinfo/711?activate
-GET /userinfo/711/activate
+https://api.example.com
 ```
 
-**REST 的核心原则是将你的 API 拆分为逻辑上的资源。这些资源通过 HTTP 被操作(GET,POST,PUT,DELETE)**
+如果确定API很简单，不会有进一步扩展，可以考虑放在主域名下。
 
-我们定义资源 userinfo:
+```
+https://example.org/api/
+```
 
-* GET /userinfo        # 获取userinfo列表
-* GET /userinfo/12     # 查看某个具体的userinfo
-* POST /userinfo       # 新建一个userinfo
-* PUT /userinfo/12     # 更新userinfo 12
-* DELETE /userinfo/12  # 删除userinfo 12
+# 三、版本（Versioning）
 
-只需要一个 endpoint：/userinfo ，再也没有其他什么命名规则和 URL 规则了。
+应该将API的版本号放入URL。
 
-一个可以遵循的规则是：虽然看起来使用复数来描述某一个资源看起来特别扭，但是统一所有的 endpoint，使用复数使得你的 URL 更加规整。这让 API 使用者更加容易理解，对开发者来说也更容易实现。
+```
+https://api.example.com/v1/
+```
 
-**处理关联：**
+另一种做法是，将版本号放在HTTP头信息中，但不如放入URL方便和直观。Github采用这种做法。
 
-* GET /userinfo/12/messages        # 获取userinfo 12的message列表
-* GET /userinfo/12/messages/5      # 获取userinfo 12的message 5
-* POST /userinfo/12/messages       # 创建userinfo 12的一个message
-* PUT /userinfo/12/messages/5      # 更新userinfo 12的message 5
-* DELETE /userinfo/12/messages/5   # 删除userinfo 12的message 5
+# 四、路径（Endpoint）
 
-**避免层级过深的 URL**
+路径又称"终点"（endpoint），表示API的具体网址。
 
-`/` 在 URL 中表达层级，用于按实体关联关系进行对象导航，一般根据 id 导航。
+在RESTful架构中，每个网址代表一种资源（resource），所以网址中不能有动词，只能有名词，而且所用的名词往往与数据库的表格名对应。一般来说，数据库中的表都是同种记录的"集合"（collection），所以API中的名词也应该使用复数。
 
-过深的导航容易导致 URL 膨胀，不易维护，如 `GET /zoos/1/areas/3/animals/4`，尽量使用查询参数代替路劲中的实体导航，如 `GET /animals?zoo=1&area=3`。
+举例来说，有一个API提供动物园（zoo）的信息，还包括各种动物和雇员的信息，则它的路径应该设计成下面这样。
 
-**结果过滤，排序，搜索**
+```
+https://api.example.com/v1/zoos
+https://api.example.com/v1/animals
+https://api.example.com/v1/employees
+```
 
-URL 最好越简短越好，对结果过滤、排序、搜索相关的功能都应该通过参数实现。
+#五、HTTP动词
 
-**过滤：**
+对于资源的具体操作类型，由HTTP动词表示。
 
-例如你想限制 `GET /tickets` 的返回结果：只返回那些 open 状态的 ticket， `GET /userinfo?state=open` 这里的 state 就是过滤参数。
+常用的HTTP动词有下面五个（括号里是对应的SQL命令）。
 
-**排序：**
+```
+GET（SELECT）：从服务器取出资源（一项或多项）。
+POST（INSERT）：在服务器新建一个资源。
+PUT（UPDATE）：在服务器更新资源（客户端提供改变后的完整资源）。
+PATCH（UPDATE）：在服务器更新资源（客户端提供改变的属性）。
+DELETE（DELETE）：从服务器删除资源。
+```
 
-和过滤一样，一个好的排序参数应该能够描述排序规则，而不和业务相关。复杂的排序规则应该通过组合实现。排序参数通过 `,` 分隔，排序参数前加 `-` 表示降序排列。
+还有两个不常用的HTTP动词。
 
-* GET /userinfo?sort=-priority             #获取按优先级降序排列的ticket列表
-* GET /userinfo?sort=-priority,created_at  #获取按优先级降序排列的ticket列表，在同一个优先级内，先创建的 ticket 排列在前面。
+HEAD：获取资源的元数据。
 
-**搜索：**
+OPTIONS：获取信息，关于资源的哪些属性是客户端可以改变的。
 
-有些时候简单的排序是不够的。我们可以使用搜索技术来实现
+下面是一些例子。
 
-* GET /userinfo?q=return&state=open&sort=-priority,create_at # 获取优先级最高且打开状态的 userinfo ，而且包含单词 return 的 ticket 列表。
+```
+GET /zoos：列出所有动物园
+POST /zoos：新建一个动物园
+GET /zoos/ID：获取某个指定动物园的信息
+PUT /zoos/ID：更新某个指定动物园的信息（提供该动物园的全部信息）
+PATCH /zoos/ID：更新某个指定动物园的信息（提供该动物园的部分信息）
+DELETE /zoos/ID：删除某个动物园
+GET /zoos/ID/animals：列出某个指定动物园的所有动物
+DELETE /zoos/ID/animals/ID：删除某个指定动物园的指定动物
+```
 
-**限制API返回值的域**
+# 六、过滤信息（Filtering）
 
-有时候 API 使用者不需要所有的结果，在进行横向限制的同时（例如值返回 API 结果的前十个），还应该可以进行纵向限制，并且这个功能能有效的提高网络带宽使用率和速度。可以使用 fields 查询参数来限制返回的域例如：
+如果记录数量很多，服务器不可能都将它们返回给用户。API应该提供参数，过滤返回结果。
 
-* GET /userinfo?fields=id,subject,customer_name,updated_at&state=open&sort=-updated_at
+下面是一些常见的参数。
 
-**Response不要包装**
+```
+?limit=10：指定返回记录的数量
+?offset=10：指定返回记录的开始位置。
+?page=2&per_page=100：指定第几页，以及每页的记录数。
+?sortby=name&order=asc：指定返回结果按照哪个属性排序，以及排序顺序。
+?animal_type_id=1：指定筛选条件
+```
 
-response 的 body 直接就是数据，不要做多余的包装。错误实例：
+参数的设计允许存在冗余，即允许API路径和URL参数偶尔有重复。比如，GET /zoo/ID/animals 与 GET /animals?zoo_id=ID 的含义是相同的。
+
+# 七、状态码（Status Codes）
+
+服务器向用户返回的状态码和提示信息，常见的有以下一些（方括号中是该状态码对应的HTTP动词）。
+
+```
+200 OK - [GET]：服务器成功返回用户请求的数据，该操作是幂等的（Idempotent）。
+201 CREATED - [POST/PUT/PATCH]：用户新建或修改数据成功。
+202 Accepted - [*]：表示一个请求已经进入后台排队（异步任务）
+204 NO CONTENT - [DELETE]：用户删除数据成功。
+400 INVALID REQUEST - [POST/PUT/PATCH]：用户发出的请求有错误，服务器没有进行新建或修改数据的操作，该操作是幂等的。
+401 Unauthorized - [*]：表示用户没有权限（令牌、用户名、密码错误）。
+403 Forbidden - [*] 表示用户得到授权（与401错误相对），但是访问是被禁止的。
+404 NOT FOUND - [*]：用户发出的请求针对的是不存在的记录，服务器没有进行操作，该操作是幂等的。
+406 Not Acceptable - [GET]：用户请求的格式不可得（比如用户请求JSON格式，但是只有XML格式）。
+410 Gone -[GET]：用户请求的资源被永久删除，且不会再得到的。
+422 Unprocesable entity - [POST/PUT/PATCH] 当创建一个对象时，发生一个验证错误。
+500 INTERNAL SERVER ERROR - [*]：服务器发生错误，用户将无法判断发出的请求是否成功。
+```
+
+状态码的完全列表参见这里。
+
+# 八、错误处理（Error handling）
+
+如果状态码是4xx，就应该向用户返回出错信息。一般来说，返回的信息中将error作为键名，出错信息作为键值即可。
 
 ```
 {
-    "success":true,
-    "data":{"id":1, "name":"xiaotuan"}
+    error: "Invalid API key"
 }
 ```
 
-**更新和创建操作应该返回资源**
+# 九、返回结果
 
-在 POST 操作以后，返回 201 created 状态码，并且包含一个指向新资源的  url 作为返回头。
+针对不同操作，服务器向用户返回的结果应该符合以下规范。
 
-**命名方式**
+```
+GET /collection：返回资源对象的列表（数组）
+GET /collection/resource：返回单个资源对象
+POST /collection：返回新生成的资源对象
+PUT /collection/resource：返回完整的资源对象
+PATCH /collection/resource：返回完整的资源对象
+DELETE /collection/resource：返回一个空文档
+```
 
-是蛇形命名还是驼峰命名？如果使用 JSON 那么最好的应该是遵守 JavaScript的命名方法-驼峰命名法。Java、C# 使用驼峰，python、ruby 使用蛇形。
+# 十、Hypermedia API
+RESTful API最好做到Hypermedia，即返回结果中提供链接，连向其他API方法，使得用户不查文档，也知道下一步应该做什么。
 
-**默认使用 pretty print 格式，开启 gzip**
+比如，当用户向api.example.com的根目录发出请求，会得到这样一个文档。
 
-开启 pretty print 返回结果会更加友好易读，而且额外的传输也可以忽略不计。如果忘了使用 gzip 那么传输效率将会大大减少，损失大大增加。
+```
+{"link": {
+  "rel":   "collection https://www.example.com/zoos",
+  "href":  "https://api.example.com/zoos",
+  "title": "List of zoos",
+  "type":  "application/vnd.yourformat+json"
+}}
+```
 
-# Http 返回码
-## 1xx(临时响应) 
-	表示临时响应并需要请求者继续执行操作的状态码。
- - 100(继续)请求者应当继续提出请求。服务器返回此代码表示已收到请求的第一部分，正在等待其余部分。
- - 101(切换协议)请求者已要求服务器切换协议，服务器已确认并准备切换。
+上面代码表示，文档中有一个link属性，用户读取这个属性就知道下一步该调用什么API了。
 
-## 2xx (成功)
-	表示成功处理了请求的状态码。
- - 200(成功)服务器已成功处理了请求。通常，这表示服务器提供了请求的网页。如果是对您的 robots.txt 文件显示此状态码，则表示 Googlebot 已成功检索到该文件。
- - 201(已创建)请求成功并且服务器创建了新的资源。
- - 202(已接受)服务器已接受请求，但尚未处理。
- - 203(非授权信息)服务器已成功处理了请求，但返回的信息可能来自另一来源。
- - 204(无内容)服务器成功处理了请求，但没有返回任何内容。
- - 205(重置内容)服务器成功处理了请求，但没有返回任何内容。与 204 响应不同，此响应要求请求者重置文档视图(例如，清除表单内容以输入新内容)。
- - 206(部分内容)服务器成功处理了部分 GET 请求。
+rel表示这个API与当前网址的关系（collection关系，并给出该collection的网址），href表示API的路径，title表示API的标题，type表示返回类型。
 
-## 3xx (重定向)
-	要完成请求，需要进一步操作。通常，这些状态码用来重定向。Google 建议您在每次请求中使用重定向不要超过 5 次。
-	您可以使用网站管理员工具查看一下 Googlebot 在抓取重定向网页时是否遇到问题。
-	诊断下的网络抓取页列出了由于重定向错误导致 Googlebot 无法抓取的网址。
- - 300(多种选择)针对请求，服务器可执行多种操作。服务器可根据请求者 (user agent) 选择一项操作，或提供操作列表供请求者选择。
- - 301(永久移动)请求的网页已永久移动到新位置。服务器返回此响应(对 GET 或 HEAD 请求的响应)时，会自动将请求者转到新位置。您应使用此代码告诉 Googlebot 某个网页或网站已永久移动到新位置。
- - 302(临时移动)服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来响应以后的请求。此代码与响应 GET 和 HEAD 请求的 301 代码类似，会自动将请求者转到不同的位置，但您不应使用此代码来告诉 Googlebot 某个网页或网站已经移动，因为 Googlebot 会继续抓取原有位置并编制索引。
- - 303(查看其他位置)请求者应当对不同的位置使用单独的 GET 请求来检索响应时，服务器返回此代码。对于除 HEAD 之外的所有请求，服务器会自动转到其他位置。
- - 304(未修改)自从上次请求后，请求的网页未修改过。服务器返回此响应时，不会返回网页内容。
-如果网页自请求者上次请求后再也没有更改过，您应将服务器配置为返回此响应(称为 If-Modified-Since HTTP 标头)。服务器可以告诉搜索引擎的蜘蛛/机器人 自从上次抓取后网页没有变更，进而节省带宽和开销。
- - 305(使用代理)请求者只能使用代理访问请求的网页。如果服务器返回此响应，还表示请求者应使用代理。
- - 307(临时重定向)服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来响应以后的请求。此代码与响应 GET 和 HEAD 请求的 301 代码类似，会自动将请求者转到不同的位置，但您不应使用此代码来告诉 Googlebot 某个页面或网站已经移动，因为 Googlebot 会继续抓取原有位置并编制索引。
-　　
-## 4xx(请求错误)
-	这些状态码表示请求可能出错，妨碍了服务器的处理。
- - 400(错误请求)服务器不理解请求的语法。
- - 401(未授权)请求要求身份验证。对于登录后请求的网页，服务器可能返回此响应。
- - 403(禁止)服务器拒绝请求。如果您在 Googlebot 尝试抓取您网站上的有效网页时看到此状态码(您可以在 Google 网站管理员工具诊断下的网络抓取页面上看到此信息)，可能是您的服务器或主机拒绝了 Googlebot 访问。
- - 404(未找到)服务器找不到请求的网页。例如，对于服务器上不存在的网页经常会返回此代码。
-如果您的网站上没有 robots.txt 文件，而您在 Google 网站管理员工具"诊断"标签的 robots.txt 页上看到此状态码，则这是正确的状态码。但是，如果您有 robots.txt 文件而又看到此状态码，则说明您的 robots.txt 文件可能命名错误或位于错误的位置(该文件应当位于顶级域，名为 robots.txt)。
-如果对于 Googlebot 抓取的网址看到此状态码(在"诊断"标签的 HTTP 错误页面上)，则表示 Googlebot 跟随的可能是另一个页面的无效链接(是旧链接或输入有误的链接)。
- - 405(方法禁用)禁用请求中指定的方法。
- - 406(不接受)无法使用请求的内容特性响应请求的网页。
- - 407(需要代理授权)此状态码与 401(未授权)类似，但指定请求者应当授权使用代理。如果服务器返回此响应，还表示请求者应当使用代理。
- - 408(请求超时)服务器等候请求时发生超时。
- - 409(冲突)服务器在完成请求时发生冲突。服务器必须在响应中包含有关冲突的信息。服务器在响应与前一个请求相冲突的 PUT 请求时可能会返回此代码，以及两个请求的差异列表。
- - 410(已删除)如果请求的资源已永久删除，服务器就会返回此响应。该代码与 404(未找到)代码类似，但在资源以前存在而现在不存在的情况下，有时会用来替代 404 代码。如果资源已永久移动，您应使用 301 指定资源的新位置。
- - 411(需要有效长度)服务器不接受不含有效内容长度标头字段的请求。
- - 412(未满足前提条件)服务器未满足请求者在请求中设置的其中一个前提条件。
- - 413(请求实体过大)服务器无法处理请求，因为请求实体过大，超出服务器的处理能力。
- - 414(请求的 URI 过长)请求的 URI(通常为网址)过长，服务器无法处理。
- - 415(不支持的媒体类型)请求的格式不受请求页面的支持。
- - 416(请求范围不符合要求)如果页面无法提供请求的范围，则服务器会返回此状态码。
- - 417(未满足期望值)服务器未满足"期望"请求标头字段的要求。
+Hypermedia API的设计被称为HATEOAS。Github的API就是这种设计，访问api.github.com会得到一个所有可用API的网址列表。
 
-## 5xx(服务器错误)
-	这些状态码表示服务器在处理请求时发生内部错误。这些错误可能是服务器本身的错误，而不是请求出错。
- - 500(服务器内部错误)服务器遇到错误，无法完成请求。
- - 501(尚未实施)服务器不具备完成请求的功能。例如，服务器无法识别请求方法时可能会返回此代码。
- - 502(错误网关)服务器作为网关或代理，从上游服务器收到无效响应。
- - 503(服务不可用)服务器目前无法使用(由于超载或停机维护)。通常，这只是暂时状态。
- - 504(网关超时)服务器作为网关或代理，但是没有及时从上游服务器收到请求。
- - 505(HTTP 版本不受支持)服务器不支持请求中所用的 HTTP 协议版本。
+```
+{
+  "current_user_url": "https://api.github.com/user",
+  "authorizations_url": "https://api.github.com/authorizations",
+  // ...
+}
+```
+
+从上面可以看到，如果想获取当前用户的信息，应该去访问api.github.com/user，然后就得到了下面结果。
+
+```
+{
+  "message": "Requires authentication",
+  "documentation_url": "https://developer.github.com/v3"
+}
+```
+
+上面代码表示，服务器给出了提示信息，以及文档的网址。
+
+# 十一、其他
+（1）API的身份认证应该使用 OAuth 2.0 框架。
+
+（2）服务器返回的数据格式，应该尽量使用JSON，避免使用XML。
+
+(完)
+
+作者： 阮一峰
+
+日期： 2014年5月22日
