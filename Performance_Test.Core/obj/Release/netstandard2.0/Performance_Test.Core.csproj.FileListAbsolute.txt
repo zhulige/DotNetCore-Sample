@@ -1,0 +1,9 @@
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test.Core\bin\Release\netstandard2.0\Performance_Test.Core.deps.json
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test.Core\bin\Release\netstandard2.0\Performance_Test.Core.dll
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test.Core\bin\Release\netstandard2.0\Performance_Test.Core.pdb
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test.Core\obj\Release\netstandard2.0\Performance_Test.Core.csprojResolveAssemblyReference.cache
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test.Core\obj\Release\netstandard2.0\Performance_Test.Core.csproj.CoreCompileInputs.cache
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test.Core\obj\Release\netstandard2.0\Performance_Test.Core.AssemblyInfoInputs.cache
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test.Core\obj\Release\netstandard2.0\Performance_Test.Core.AssemblyInfo.cs
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test.Core\obj\Release\netstandard2.0\Performance_Test.Core.dll
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test.Core\obj\Release\netstandard2.0\Performance_Test.Core.pdb

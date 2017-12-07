@@ -20,6 +20,7 @@ namespace Restful_API_Sample
         public static void Main(string[] args)
         {
             var host = new WebHostBuilder()
+                .UseUrls("http://*:5050")
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()

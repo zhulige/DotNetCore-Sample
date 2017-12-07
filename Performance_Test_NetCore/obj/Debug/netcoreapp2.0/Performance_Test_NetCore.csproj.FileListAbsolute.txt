@@ -1,0 +1,13 @@
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test_NetCore\obj\Debug\netcoreapp2.0\Performance_Test_NetCore.csproj.CoreCompileInputs.cache
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test_NetCore\obj\Debug\netcoreapp2.0\Performance_Test_NetCore.AssemblyInfoInputs.cache
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test_NetCore\obj\Debug\netcoreapp2.0\Performance_Test_NetCore.AssemblyInfo.cs
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test_NetCore\obj\Debug\netcoreapp2.0\Performance_Test_NetCore.csprojResolveAssemblyReference.cache
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test_NetCore\bin\Debug\netcoreapp2.0\Performance_Test_NetCore.deps.json
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test_NetCore\bin\Debug\netcoreapp2.0\Performance_Test_NetCore.runtimeconfig.json
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test_NetCore\bin\Debug\netcoreapp2.0\Performance_Test_NetCore.runtimeconfig.dev.json
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test_NetCore\bin\Debug\netcoreapp2.0\Performance_Test_NetCore.dll
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test_NetCore\bin\Debug\netcoreapp2.0\Performance_Test_NetCore.pdb
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test_NetCore\bin\Debug\netcoreapp2.0\Performance_Test.Core.dll
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test_NetCore\bin\Debug\netcoreapp2.0\Performance_Test.Core.pdb
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test_NetCore\obj\Debug\netcoreapp2.0\Performance_Test_NetCore.dll
+D:\Zhulige-Github\DotNetCore-Sample\Performance_Test_NetCore\obj\Debug\netcoreapp2.0\Performance_Test_NetCore.pdb
