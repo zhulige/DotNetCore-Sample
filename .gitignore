@@ -8,3 +8,9 @@
 /ConsoleApp_Lib_Sample/bin
 /ConsoleApp_Lib_Sample/obj
 /Restful_API_Sample/.vscode
+/Performance_Test.Core/bin
+/Performance_Test.Core/obj
+/Performance_Test_NetCore/bin
+/Performance_Test_NetCore/obj
+/Performance_Test_NetFramework/bin
+/Performance_Test_NetFramework/obj
