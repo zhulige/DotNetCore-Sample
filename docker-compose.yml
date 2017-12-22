@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+
+  restful_api_sample:
+    image: restful_api_sample
+    build:
+      context: ./Restful_API_Sample
+      dockerfile: Dockerfile
+
+  performance_test_netcore:
+    image: performance_test_netcore
+    build:
+      context: ./Performance_Test_NetCore
+      dockerfile: Dockerfile

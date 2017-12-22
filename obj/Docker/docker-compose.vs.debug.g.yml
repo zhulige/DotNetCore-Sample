@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  performance_test_netcore:
+    image: performance_test_netcore:dev
+    build:
+      args:
+        source: obj/Docker/empty/
+    environment:
+      - NUGET_FALLBACK_PACKAGES=/root/.nuget/fallbackpackages
+    volumes:
+      - D:\Zhulige-Github\DotNetCore-Sample\Performance_Test_NetCore:/app
+      - C:\Users\Zhulige\vsdbg:/remote_debugger:ro
+      - C:\Users\Zhulige\.nuget\packages\:/root/.nuget/packages:ro
+      - C:\Program Files\dotnet\sdk\NuGetFallbackFolder:/root/.nuget/fallbackpackages:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      com.microsoft.visualstudio.debuggee.arguments: " --additionalProbingPath /root/.nuget/packages --additionalProbingPath /root/.nuget/fallbackpackages  bin/Release/netcoreapp2.0/Performance_Test_NetCore.dll"
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/bash -c \"if PID=$$(pidof -x dotnet); then kill $$PID; fi\""
+
+  restful_api_sample:
+    image: restful_api_sample:dev
+    build:
+      args:
+        source: obj/Docker/empty/
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      - NUGET_FALLBACK_PACKAGES=/root/.nuget/fallbackpackages
+    volumes:
+      - D:\Zhulige-Github\DotNetCore-Sample\Restful_API_Sample:/app
+      - C:\Users\Zhulige\vsdbg:/remote_debugger:ro
+      - C:\Users\Zhulige\.nuget\packages\:/root/.nuget/packages:ro
+      - C:\Program Files\dotnet\sdk\NuGetFallbackFolder:/root/.nuget/fallbackpackages:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      com.microsoft.visualstudio.debuggee.arguments: " --additionalProbingPath /root/.nuget/packages --additionalProbingPath /root/.nuget/fallbackpackages  bin/Release/netcoreapp2.0/Restful_API_Sample.dll"
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/bash -c \"if PID=$$(pidof -x dotnet); then kill $$PID; fi\""

@@ -9,4 +9,10 @@
     <ProjectReference Include="..\Performance_Test.Core\Performance_Test.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update=".dockerignore">
+      <DependentUpon>Dockerfile</DependentUpon>
+    </None>
+  </ItemGroup>
+
 </Project>

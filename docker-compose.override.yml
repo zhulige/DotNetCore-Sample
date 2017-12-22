@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+
+  restful_api_sample:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5050"
+
+  performance_test_netcore:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5050"
